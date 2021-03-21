@@ -11,6 +11,8 @@ public class AccountBizException extends BizException {
 
     public static final AccountBizException ACCOUNT_NOT_EXIT = new AccountBizException(20080001, "账户不存在");
 
+    public static final AccountBizException ACCOUNT_PASSWORD_ERROR = new AccountBizException(20080002, "账户密码错误");
+
     public static final AccountBizException ACCOUNT_STATUS_IS_LOCKED = new AccountBizException(20080102, "账户已锁定");
 
     public static final AccountBizException ACCOUNT_STATUS_IS_DESTROY = new AccountBizException(20080102, "账户已注销");

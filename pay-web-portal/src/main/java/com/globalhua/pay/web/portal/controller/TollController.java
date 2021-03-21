@@ -27,4 +27,14 @@ public class TollController {
         return CommonResult.ok();
     }
 
+    /**
+     * 确认代发
+     */
+    @PostMapping("confirmToll")
+    public CommonResult<Void> confirmToll() {
+        return CommonResult.ok();
+    }
+
+
+
 }

@@ -22,6 +22,8 @@
         <module>pay-service-account</module>
         <module>pay-facade-toll</module>
         <module>pay-service-toll</module>
+        <module>pay-facade-project</module>
+        <module>pay-service-project</module>
     </modules>
 
     <properties>
@@ -33,9 +35,11 @@
 
         <pay-facade-account.version>1.0-SNAPSHOT</pay-facade-account.version>
         <pay-facade-toll.version>1.0-SNAPSHOT</pay-facade-toll.version>
+        <pay-facade-project.version>1.0-SNAPSHOT</pay-facade-project.version>
 
         <pay-service-account.version>1.0-SNAPSHOT</pay-service-account.version>
         <pay-service-toll.version>1.0-SNAPSHOT</pay-service-toll.version>
+        <pay-service-project.version>1.0-SNAPSHOT</pay-service-project.version>
 
         <hutool.version>5.6.1</hutool.version>
     </properties>
