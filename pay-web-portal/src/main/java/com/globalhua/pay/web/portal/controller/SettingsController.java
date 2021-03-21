@@ -1,5 +1,6 @@
 package com.globalhua.pay.web.portal.controller;
 
+import com.globalhua.pay.common.web.vo.CommonResult;
 import com.globalhua.pay.facade.account.service.AccountManagementFacade;
 import com.globalhua.pay.web.portal.biz.SmsAuthCodeBiz;
 import com.globalhua.pay.web.portal.dto.ResetPasswordRequest;
@@ -26,17 +27,19 @@ public class SettingsController {
      * 修改密码
      */
     @PostMapping("resetPassword")
-    public void resetPassword(@RequestBody ResetPasswordRequest body) {
+    public CommonResult<Void> resetPassword(@RequestBody ResetPasswordRequest body) {
 //        smsAuthCodeBiz.checkAuthCode(,SmsAuthCodeBiz.BIZ_TYPE_RESET_PASSWORD,body.getAuthCode());
 //        accountManagementFacade.resetPassword(,body.getPassword());
+        return CommonResult.ok();
     }
 
     /**
      * 修改支付密码
      */
     @PostMapping("resetPayPassword")
-    public void resetPayPassword(@RequestBody ResetPayPasswordRequest body) {
+    public CommonResult<Void> resetPayPassword(@RequestBody ResetPayPasswordRequest body) {
 //        smsAuthCodeBiz.checkAuthCode(,SmsAuthCodeBiz.BIZ_TYPE_RESET_PAY_PASSWORD,body.getAuthCode());
 //        accountManagementFacade.resetPayPassword(,body.getPayPassword());
+        return CommonResult.ok();
     }
 }
