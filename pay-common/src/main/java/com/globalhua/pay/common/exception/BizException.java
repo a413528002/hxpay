@@ -9,9 +9,9 @@ public class BizException extends RuntimeException {
     private static final long serialVersionUID = -5875371379845326068L;
 
     /**
-     * 请求体解密失败
+     * 参数校验异常
      */
-    public static final BizException DECRYPT_REQUEST_BODY_EXCEPTION = new BizException(90040001, "请求体解密出错");
+    public static final BizException PARAMETER_VALIDATE_EXCEPTION = new BizException(90010003,"参数校验失败");
 
     /**
      * 异常信息

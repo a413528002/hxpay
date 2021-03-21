@@ -16,4 +16,11 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.globalhua</groupId>
+            <artifactId>pay-common</artifactId>
+            <version>${pay-common.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -30,6 +30,8 @@
         <pay-common-web.version>1.0-SNAPSHOT</pay-common-web.version>
 
         <pay-facade-account.version>1.0-SNAPSHOT</pay-facade-account.version>
+
+        <hutool.version>5.6.1</hutool.version>
     </properties>
 
 </project>
