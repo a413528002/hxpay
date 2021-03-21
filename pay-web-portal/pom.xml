@@ -34,7 +34,11 @@
             <artifactId>pay-facade-account</artifactId>
             <version>${pay-facade-account.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.globalhua</groupId>
+            <artifactId>pay-facade-toll</artifactId>
+            <version>${pay-facade-toll.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
