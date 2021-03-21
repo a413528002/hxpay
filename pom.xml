@@ -20,6 +20,8 @@
         <module>pay-common-web</module>
         <module>pay-facade-account</module>
         <module>pay-service-account</module>
+        <module>pay-facade-toll</module>
+        <module>pay-service-toll</module>
     </modules>
 
     <properties>

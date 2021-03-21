@@ -2,6 +2,9 @@ package com.globalhua.pay.facade.account.exception;
 
 import com.globalhua.pay.common.exception.BizException;
 
+/**
+ * 账号业务异常
+ */
 public class AccountBizException extends BizException {
 
     private static final long serialVersionUID = 1L;
