@@ -34,6 +34,9 @@
         <pay-facade-account.version>1.0-SNAPSHOT</pay-facade-account.version>
         <pay-facade-toll.version>1.0-SNAPSHOT</pay-facade-toll.version>
 
+        <pay-service-account.version>1.0-SNAPSHOT</pay-service-account.version>
+        <pay-service-toll.version>1.0-SNAPSHOT</pay-service-toll.version>
+
         <hutool.version>5.6.1</hutool.version>
     </properties>
 

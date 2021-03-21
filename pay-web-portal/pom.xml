@@ -41,6 +41,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.globalhua</groupId>
+            <artifactId>pay-service-account</artifactId>
+            <version>${pay-service-account.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.globalhua</groupId>
+            <artifactId>pay-service-toll</artifactId>
+            <version>${pay-service-toll.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <exclusions>
