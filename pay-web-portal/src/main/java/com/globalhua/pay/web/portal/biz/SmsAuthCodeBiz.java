@@ -3,19 +3,30 @@ package com.globalhua.pay.web.portal.biz;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.RandomUtil;
 import com.globalhua.pay.common.exception.BizException;
+import com.globalhua.pay.web.portal.exception.PortalException;
+import com.globalhua.pay.web.portal.security.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * 短信验证码业务
  */
 @Component
 public class SmsAuthCodeBiz {
+
+    private static final Logger log = LoggerFactory.getLogger(SmsAuthCodeBiz.class);
 
     /**
      * 登录
@@ -43,6 +54,21 @@ public class SmsAuthCodeBiz {
 
     private static final String SESSION_KEY_AUTH_CODE = "_SMS_AUTH_CODE";
 
+    /**
+     * 短信模板编号
+     */
+    private String tempCode = "";
+
+    /**
+     * 验证码有效时间，单位分钟
+     */
+    private int authCodeEffectiveMinute;
+
+    /**
+     * 验证码长度
+     */
+    private byte codeLength;
+
     @Resource
     private HttpServletRequest request;
 
@@ -52,15 +78,16 @@ public class SmsAuthCodeBiz {
      * @param bizType 业务类型
      */
     public void sendSms(String phoneNumber, String bizType) throws BizException {
-
-        validateParam(phoneNumber, bizType);
-
+        final String number = phoneNumber == null ? getPrincipalPhoneNumber() : phoneNumber;
+        validateParam(number, bizType);
         String authCode = generateAuthCode();
-
-//        String sessionValue = sessionValue(request.getUserPrincipal().getName());
-
-//        request.getSession().setAttribute(SESSION_KEY_AUTH_CODE, sessionValue);
-
+        store(number, bizType, authCode);
+        try {
+            doSend(number, bizType, authCode);
+        } catch (Exception e) {
+            log.error("短信发送失败",e);
+            throw PortalException.SMS_SEND_ERROR;
+        }
     }
 
     /**
@@ -71,17 +98,65 @@ public class SmsAuthCodeBiz {
      * @throws BizException
      */
     public void checkAuthCode(String phoneNumber, String bizType, String authCode) throws BizException {
-        validateParam(phoneNumber, bizType);
+        final String number = phoneNumber == null ? getPrincipalPhoneNumber() : phoneNumber;
+        validateParam(number, bizType);
+        check(phoneNumber, bizType, authCode);
+    }
+
+    protected void doSend(String number, String bizType, String authCode) {
 
     }
 
-
-    private String sessionValue(String phoneNumber, String code) {
-        return null;
+    protected void store(String number, String bizType, String authCode) {
+        long current = System.currentTimeMillis();
+        String value = number + "&" + bizType + "&" + authCode + "&" + current;
+        request.getSession().setAttribute(SESSION_KEY_AUTH_CODE,value);
     }
 
+    protected void check(String phoneNumber, String bizType, String authCode) {
+        if (authCode == null || authCode.length() != codeLength) {
+            throw PortalException.SMS_AUTH_CODE_ERROR;
+        }
+        String value = (String) request.getSession().getAttribute(SESSION_KEY_AUTH_CODE);
+        if (value == null) {
+            throw PortalException.SMS_AUTH_CODE_NOT_FOUND;
+        }
+        String[] split = value.split("&");
+        if (split.length != 4) {
+            throw PortalException.SMS_AUTH_CODE_NOT_FOUND;
+        }
+        if (!Objects.equals(phoneNumber,split[0])) {
+            throw PortalException.SMS_AUTH_PHONE_NUMBER_ERROR;
+        }
+        if (!Objects.equals(bizType, split[1]) || Objects.equals(authCode,split[2])) {
+            throw PortalException.SMS_AUTH_CODE_ERROR;
+        }
+        long current = System.currentTimeMillis();
+        Long sendTime = Long.valueOf(split[3]);
+        if ((current - sendTime) > MINUTES.toMillis(authCodeEffectiveMinute)) {
+            throw PortalException.SMS_AUTH_CODE_EXPIRED;
+        }
+    }
+
+    /**
+     * 生成验证码
+     * @return
+     */
     private String generateAuthCode() {
-        return RandomUtil.randomNumbers(6);
+        return RandomUtil.randomNumbers(codeLength);
+    }
+
+    /**
+     * 获取当前用户的手机号
+     * @return
+     */
+    private String getPrincipalPhoneNumber() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User) {
+            return ((User) principal).getPhoneNumber();
+        }
+        throw PortalException.PRINCIPAL_PHONE_NUMBER_NOT_FOUND;
     }
 
     private void validateParam(String phoneNumber, String bizType) {
@@ -92,5 +167,29 @@ public class SmsAuthCodeBiz {
         if (!BIZ_TYPE_SET.contains(bizType)) {
             throw BizException.PARAMETER_VALIDATE_EXCEPTION.newInstance("短信验证码业务业务类型错误");
         }
+    }
+
+    public String getTempCode() {
+        return tempCode;
+    }
+
+    public void setTempCode(String tempCode) {
+        this.tempCode = tempCode;
+    }
+
+    public int getAuthCodeEffectiveMinute() {
+        return authCodeEffectiveMinute;
+    }
+
+    public void setAuthCodeEffectiveMinute(int authCodeEffectiveMinute) {
+        this.authCodeEffectiveMinute = authCodeEffectiveMinute;
+    }
+
+    public byte getCodeLength() {
+        return codeLength;
+    }
+
+    public void setCodeLength(byte codeLength) {
+        this.codeLength = codeLength;
     }
 }

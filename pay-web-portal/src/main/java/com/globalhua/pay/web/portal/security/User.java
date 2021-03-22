@@ -1,6 +1,7 @@
 package com.globalhua.pay.web.portal.security;
 
 import com.globalhua.pay.facade.account.enums.AccountStatus;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import java.util.*;
 /**
  * 用户
  */
-public class User implements UserDetails {
+public class User implements UserDetails, CredentialsContainer {
 
     private static final long serialVersionUID = 666L;
 
@@ -66,8 +67,20 @@ public class User implements UserDetails {
      */
     private AccountStatus accountStatus;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
+    }
+
+    public User maskClone() {
+        User user = new User(username,"N/A", null);
+        user.setAccountStatus(accountStatus);
+        user.setPhoneNumber(phoneNumber);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRealname(realname);
+        user.setQq(qq);
+        return user;
     }
 
     @Override
@@ -155,6 +168,19 @@ public class User implements UserDetails {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            return this.username.equals(((User) obj).username);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.username.hashCode();
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {

@@ -35,6 +35,13 @@ public class TollController {
         return CommonResult.ok();
     }
 
-
+    /**
+     * 支付
+     * @return
+     */
+    @PostMapping("pay")
+    public CommonResult<Void> pay() {
+        return CommonResult.ok();
+    }
 
 }

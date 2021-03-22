@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pay-facade-project</artifactId>
+    <artifactId>pay-service-wallet</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,8 +19,9 @@
     <dependencies>
         <dependency>
             <groupId>com.globalhua</groupId>
-            <artifactId>pay-common</artifactId>
-            <version>${pay-common.version}</version>
+            <artifactId>pay-facade-wallet</artifactId>
+            <version>${pay-facade-wallet.version}</version>
         </dependency>
     </dependencies>
+
 </project>

@@ -25,4 +25,13 @@ public enum AccountStatus {
     public int getValue() {
         return value;
     }
+
+    public static AccountStatus findByValue(int value) {
+        for (AccountStatus accountStatus : values()) {
+            if (accountStatus.value == value) {
+                return accountStatus;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
 }

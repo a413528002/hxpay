@@ -6,7 +6,7 @@ import com.globalhua.pay.facade.account.vo.AccountDetails;
 public class AccountQueryFacadeImpl implements AccountQueryFacade {
 
     @Override
-    public AccountDetails queryAccountDetails(String username, String password) {
+    public AccountDetails queryAccountDetails(String username) {
         return null;
     }
 }

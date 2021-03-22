@@ -25,4 +25,9 @@ public class AccountBizException extends BizException {
     public AccountBizException(int code, String msgFormat, Object... args) {
         super(code, msgFormat, args);
     }
+
+    @Override
+    public AccountBizException newInstance(String msgFormat, Object... args) {
+        return new AccountBizException(this.code, msgFormat, args);
+    }
 }
