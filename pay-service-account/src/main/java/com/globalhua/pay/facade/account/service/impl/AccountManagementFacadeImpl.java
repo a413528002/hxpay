@@ -1,7 +1,9 @@
 package com.globalhua.pay.facade.account.service.impl;
 
 import com.globalhua.pay.facade.account.service.AccountManagementFacade;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AccountManagementFacadeImpl implements AccountManagementFacade {
 
     @Override

@@ -30,9 +30,8 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         response.setStatus(HttpServletResponse.SC_OK);
         User user = (User) authentication.getPrincipal();
         CommonResult<User> result = CommonResult.ok(user.maskClone());
-        OutputStream out = response.getOutputStream();
-        objectMapper.writeValue(out, result);
-        out.flush();
-        out.close();
+        String json = objectMapper.writeValueAsString(result);
+        response.getWriter().print(json);
+        response.flushBuffer();
     }
 }
