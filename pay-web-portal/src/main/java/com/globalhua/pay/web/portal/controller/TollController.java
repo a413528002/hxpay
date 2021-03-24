@@ -2,6 +2,7 @@ package com.globalhua.pay.web.portal.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.globalhua.pay.common.web.vo.CommonResult;
+import com.globalhua.pay.facade.toll.dto.TollTemplate;
 import com.globalhua.pay.facade.toll.entity.TollOrder;
 import com.globalhua.pay.facade.toll.service.TollManagementFacade;
 import com.globalhua.pay.facade.toll.service.TollQueryFacade;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 代发
@@ -58,8 +62,12 @@ public class TollController {
      * 导入Excel
      */
     @PostMapping("importExcel")
-    public CommonResult<Void> importExcel(MultipartFile file) {
-        return CommonResult.ok();
+    public CommonResult<TollBatchVo> importExcel(MultipartFile file) {
+        // TODO: 2021/3/24
+        List<TollTemplate> template = Collections.emptyList();
+
+        TollBatchVo tollBatchVo = tollManagementFacade.importToll(template);
+        return CommonResult.ok(tollBatchVo);
     }
 
     /**
