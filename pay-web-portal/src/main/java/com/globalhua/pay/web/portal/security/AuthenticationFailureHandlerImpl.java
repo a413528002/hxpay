@@ -23,7 +23,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         if (log.isDebugEnabled()) {
-            log.debug("认证失败: {}",exception.getMessage());
+            log.debug("认证失败，msg：{}",exception.getMessage());
         }
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(401);

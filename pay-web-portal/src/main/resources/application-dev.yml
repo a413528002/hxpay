@@ -1,0 +1,7 @@
+server:
+  port: 12000
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/db_hxpay?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true

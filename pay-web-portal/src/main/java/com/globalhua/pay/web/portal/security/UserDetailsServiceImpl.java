@@ -22,9 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("账户不存在");
         }
         // TODO: 2021/3/22 权限？
-        User user = new User(username, null,
+        User user = new User(username, "N/A",
                 AccountStatus.findByValue(accountDetails.getStatus()),
                 Collections.emptySet());
+        user.setPhoneNumber(accountDetails.getInfo().getMobile());
+        user.setRealname(accountDetails.getInfo().getRealname());
+        user.setEmail(accountDetails.getInfo().getEmail());
         return user;
     }
 }

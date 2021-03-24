@@ -72,7 +72,8 @@ public class User implements UserDetails, CredentialsContainer {
         this.password = null;
     }
 
-    public User maskClone() {
+    @Override
+    public User clone() {
         User user = new User(username,"N/A", null);
         user.setAccountStatus(accountStatus);
         user.setPhoneNumber(phoneNumber);
@@ -183,6 +184,13 @@ public class User implements UserDetails, CredentialsContainer {
         return this.username.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                '}';
+    }
+
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
         Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
         // Ensure array iteration order is predictable (as per
@@ -212,6 +220,5 @@ public class User implements UserDetails, CredentialsContainer {
             }
             return g1.getAuthority().compareTo(g2.getAuthority());
         }
-
     }
 }

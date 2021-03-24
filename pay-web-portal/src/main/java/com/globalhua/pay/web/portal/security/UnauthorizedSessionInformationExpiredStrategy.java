@@ -21,6 +21,10 @@ public class UnauthorizedSessionInformationExpiredStrategy implements SessionInf
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
+        if (log.isDebugEnabled()) {
+            event.getSessionInformation().getPrincipal();
+            log.debug("会话过期，principal：{}",event.getSessionInformation().getPrincipal());
+        }
         HttpServletResponse response = event.getResponse();
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(401);

@@ -18,14 +18,12 @@
         <module>pay-web-portal</module>
         <module>pay-common</module>
         <module>pay-common-web</module>
-        <module>pay-facade-account</module>
-        <module>pay-service-account</module>
+        <module>pay-facade-user</module>
+        <module>pay-service-user</module>
         <module>pay-facade-toll</module>
         <module>pay-service-toll</module>
-        <module>pay-facade-project</module>
-        <module>pay-service-project</module>
-        <module>pay-facade-wallet</module>
-        <module>pay-service-wallet</module>
+        <module>pay-common-generator</module>
+        <module>pay-web-tollapi</module>
     </modules>
 
     <properties>
@@ -35,16 +33,13 @@
         <pay-common.version>1.0-SNAPSHOT</pay-common.version>
         <pay-common-web.version>1.0-SNAPSHOT</pay-common-web.version>
 
-        <pay-facade-account.version>1.0-SNAPSHOT</pay-facade-account.version>
+        <pay-facade-user.version>1.0-SNAPSHOT</pay-facade-user.version>
         <pay-facade-toll.version>1.0-SNAPSHOT</pay-facade-toll.version>
-        <pay-facade-project.version>1.0-SNAPSHOT</pay-facade-project.version>
-        <pay-facade-wallet.version>1.0-SNAPSHOT</pay-facade-wallet.version>
 
-        <pay-service-account.version>1.0-SNAPSHOT</pay-service-account.version>
+        <pay-service-user.version>1.0-SNAPSHOT</pay-service-user.version>
         <pay-service-toll.version>1.0-SNAPSHOT</pay-service-toll.version>
-        <pay-service-project.version>1.0-SNAPSHOT</pay-service-project.version>
-        <pay-service-wallet.version>1.0-SNAPSHOT</pay-service-wallet.version>
 
+        <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <hutool.version>5.6.1</hutool.version>
     </properties>
 

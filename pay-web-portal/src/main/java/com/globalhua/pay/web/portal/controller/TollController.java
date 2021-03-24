@@ -1,10 +1,15 @@
 package com.globalhua.pay.web.portal.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.globalhua.pay.common.web.vo.CommonResult;
+import com.globalhua.pay.facade.toll.entity.TollOrder;
 import com.globalhua.pay.facade.toll.service.TollManagementFacade;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.globalhua.pay.facade.toll.service.TollQueryFacade;
+import com.globalhua.pay.facade.toll.vo.TollBatchVo;
+import com.globalhua.pay.web.portal.biz.SelectProjectBiz;
+import com.globalhua.pay.web.portal.dto.ConfirmTollRequest;
+import com.globalhua.pay.web.portal.dto.PayTollRequest;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -19,6 +24,36 @@ public class TollController {
     @Resource
     TollManagementFacade tollManagementFacade;
 
+    @Resource
+    TollQueryFacade tollQueryFacade;
+
+    @Resource
+    SelectProjectBiz selectProjectBiz;
+
+    /**
+     * 分页查询代发批次
+     * @return
+     */
+    @GetMapping("pageTollBatch")
+    public CommonResult<Page<TollBatchVo>> pageTollBatch(@RequestParam(required = false) String batchNoLike,
+                                                         Page<?> page) {
+        Long currentProjectId = selectProjectBiz.getCurrentProjectId();
+        Page<TollBatchVo> result = tollQueryFacade
+                .pageTollBatchByProjectAndBatchNoLike(currentProjectId, batchNoLike, page);
+        return CommonResult.ok(result);
+    }
+
+    /**
+     * 分页查询代发流水
+     * @return
+     */
+    @GetMapping("pageTollOrder")
+    public CommonResult<Page<TollOrder>> pageTollOrder(@RequestParam Long batchId,
+                                                       Page<?> page) {
+        Page<TollOrder> result = tollQueryFacade.pageTollOrderByBatchId(batchId, page);
+        return CommonResult.ok(result);
+    }
+
     /**
      * 导入Excel
      */
@@ -31,16 +66,16 @@ public class TollController {
      * 确认代发
      */
     @PostMapping("confirmToll")
-    public CommonResult<Void> confirmToll() {
+    public CommonResult<Void> confirmToll(@RequestBody ConfirmTollRequest body) {
         return CommonResult.ok();
     }
 
     /**
-     * 支付
+     * 支付代发
      * @return
      */
-    @PostMapping("pay")
-    public CommonResult<Void> pay() {
+    @PostMapping("payToll")
+    public CommonResult<Void> payToll(@RequestBody PayTollRequest body) {
         return CommonResult.ok();
     }
 

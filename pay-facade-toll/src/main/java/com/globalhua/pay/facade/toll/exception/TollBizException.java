@@ -15,4 +15,9 @@ public class TollBizException extends BizException {
     public TollBizException(int code, String msgFormat, Object... args) {
         super(code, msgFormat, args);
     }
+
+    @Override
+    public TollBizException newInstance(String msgFormat, Object... args) {
+        return new TollBizException(this.code, msgFormat, args);
+    }
 }

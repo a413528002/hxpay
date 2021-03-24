@@ -8,10 +8,23 @@ public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = -5875371379845326068L;
 
+
     /**
      * 参数校验异常
      */
     public static final BizException PARAMETER_VALIDATE_EXCEPTION = new BizException(90010003,"参数校验失败");
+
+    /**
+     * 数据库操作,insert返回0
+     */
+    public static final BizException DB_INSERT_RESULT_0 = new BizException(90040001, "数据库操作,insert返回0");
+
+    /**
+     * 数据库操作,update返回0
+     */
+    public static final BizException DB_UPDATE_RESULT_0 = new BizException(90040002, "数据库操作,update返回0");
+
+
 
     /**
      * 异常信息

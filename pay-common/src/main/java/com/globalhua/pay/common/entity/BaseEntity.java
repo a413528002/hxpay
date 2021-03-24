@@ -9,13 +9,11 @@ import java.time.LocalDateTime;
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    protected Long id;
 
-    private Integer version;
+    private LocalDateTime createdTime;
 
-    protected LocalDateTime createdTime;
-
-    protected LocalDateTime modifiedTime;
+    private LocalDateTime modifiedTime;
 
     public Long getId() {
         return id;
@@ -23,14 +21,6 @@ public class BaseEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     public LocalDateTime getCreatedTime() {

@@ -3,6 +3,7 @@ package com.globalhua.pay.web.portal.biz;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.RandomUtil;
 import com.globalhua.pay.common.exception.BizException;
+import com.globalhua.pay.web.portal.constants.PortalConstants;
 import com.globalhua.pay.web.portal.exception.PortalException;
 import com.globalhua.pay.web.portal.security.User;
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,8 +55,6 @@ public class SmsAuthCodeBiz {
             BIZ_TYPE_RESET_PAY_PASSWORD
     ).collect(Collectors.toSet());
 
-    private static final String SESSION_KEY_AUTH_CODE = "_SMS_AUTH_CODE";
-
     /**
      * 短信模板编号
      */
@@ -67,7 +68,10 @@ public class SmsAuthCodeBiz {
     /**
      * 验证码长度
      */
-    private byte codeLength;
+    private byte codeLength = 6;
+
+    @Resource
+    private SmsBiz smsBiz;
 
     @Resource
     private HttpServletRequest request;
@@ -104,20 +108,25 @@ public class SmsAuthCodeBiz {
     }
 
     protected void doSend(String number, String bizType, String authCode) {
-
+        // TODO: 2021/3/24
+        Map<String, Object> param = new HashMap<>();
+        param.put("bizType",bizType); // TODO: 2021/3/24 中文
+        param.put("code", authCode);
+        param.put("minute", authCodeEffectiveMinute);
+        smsBiz.sendSms(number, tempCode, param);
     }
 
     protected void store(String number, String bizType, String authCode) {
         long current = System.currentTimeMillis();
         String value = number + "&" + bizType + "&" + authCode + "&" + current;
-        request.getSession().setAttribute(SESSION_KEY_AUTH_CODE,value);
+        request.getSession().setAttribute(PortalConstants.SESSION_KEY_AUTH_CODE,value);
     }
 
     protected void check(String phoneNumber, String bizType, String authCode) {
         if (authCode == null || authCode.length() != codeLength) {
             throw PortalException.SMS_AUTH_CODE_ERROR;
         }
-        String value = (String) request.getSession().getAttribute(SESSION_KEY_AUTH_CODE);
+        String value = (String) request.getSession().getAttribute(PortalConstants.SESSION_KEY_AUTH_CODE);
         if (value == null) {
             throw PortalException.SMS_AUTH_CODE_NOT_FOUND;
         }
@@ -132,7 +141,7 @@ public class SmsAuthCodeBiz {
             throw PortalException.SMS_AUTH_CODE_ERROR;
         }
         long current = System.currentTimeMillis();
-        Long sendTime = Long.valueOf(split[3]);
+        long sendTime = Long.parseLong(split[3]);
         if ((current - sendTime) > MINUTES.toMillis(authCodeEffectiveMinute)) {
             throw PortalException.SMS_AUTH_CODE_EXPIRED;
         }

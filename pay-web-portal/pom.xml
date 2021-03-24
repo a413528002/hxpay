@@ -31,8 +31,8 @@
 
         <dependency>
             <groupId>com.globalhua</groupId>
-            <artifactId>pay-facade-account</artifactId>
-            <version>${pay-facade-account.version}</version>
+            <artifactId>pay-facade-user</artifactId>
+            <version>${pay-facade-user.version}</version>
         </dependency>
         <dependency>
             <groupId>com.globalhua</groupId>
@@ -42,8 +42,8 @@
 
         <dependency>
             <groupId>com.globalhua</groupId>
-            <artifactId>pay-service-account</artifactId>
-            <version>${pay-service-account.version}</version>
+            <artifactId>pay-service-user</artifactId>
+            <version>${pay-service-user.version}</version>
         </dependency>
         <dependency>
             <groupId>com.globalhua</groupId>
@@ -74,6 +74,11 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
 

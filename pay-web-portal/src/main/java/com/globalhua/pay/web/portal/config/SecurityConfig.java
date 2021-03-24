@@ -1,12 +1,11 @@
 package com.globalhua.pay.web.portal.config;
 
 import com.globalhua.pay.web.portal.constants.PortalConstants;
-import com.globalhua.pay.web.portal.security.AuthenticationFailureHandlerImpl;
-import com.globalhua.pay.web.portal.security.AuthenticationSuccessHandlerImpl;
-import com.globalhua.pay.web.portal.security.UnauthorizedSessionInformationExpiredStrategy;
-import com.globalhua.pay.web.portal.security.UserDetailsServiceImpl;
+import com.globalhua.pay.web.portal.security.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,12 +19,14 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/signInAuth/**").authenticated()
+                // 所有请求需要手机短信认证的权限
                 .anyRequest().hasAuthority(PortalConstants.AUTHORITY_SMS_CODE_AUTHENTICATION)
                 .and()
                 .cors()
@@ -50,6 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionAuthenticationFailureHandler(authenticationFailureHandler());
     }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -86,5 +91,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SpringSessionBackedSessionRegistry<>(this.sessionRepository);
     }*/
 
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        AuthenticationProviderImpl authenticationProvider = new AuthenticationProviderImpl();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        return authenticationProvider;
+    }
 
 }
